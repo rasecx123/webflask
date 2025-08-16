@@ -2,6 +2,8 @@ from flask import Flask, session, render_template, flash
 from config import Config
 from forms import TestForm
 
+import os
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -39,6 +41,11 @@ def test():
         nombre = form.nombre.data.strip()
         apellido = form.apellido.data.strip()
         cumpleaños = form.cumpleaños.data.isoformat()
+
+        
+        DATA_DIR = os.getenv("DATA_DIR", "data")  # toma la variable de entorno o "data"
+        os.makedirs(DATA_DIR, exist_ok=True)      # crea la carpeta si no existe
+        ruta_archivo = os.path.join(DATA_DIR, "datos.txt")
         
         #Guardar los datos en un archivo de texto
         with open("datos.txt", "a", encoding="utf-8") as f:
